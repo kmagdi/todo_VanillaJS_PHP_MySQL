@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <title>Todo</title>
+  
+</head>
+<body>
+    <div class="container border shadow p-2">
+        <h3 class="text-center">My Todos</h3>
+        <form  class="p-2">
+            <div class="d-flex ">
+                <input type="text" class="form-control" placeholder="add new todo" name="name">
+                <i class="fa-solid fa-plus   fa-2x  p-1 ml-1 rounded btn btn-outline-dark" onclick="add()"></i>
+            </div>
+        </form>
+
+        <ul class="list-group"></ul>
+        
+    </div>
+        <script src="utils.js"></script>
+     <script>
+        //megjelenítés GET
+
+       getData(urlRoot+'allTodos.php',renderList)
+     
+        function renderList(data){
+            document.querySelector('.list-group').innerHTML=data.map(obj=>`
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <i class="fa-regular fa-square-check fa-2x btn ${obj.status==1 ?'text-success':'text-secondary'}"onclick="done(${obj.id})"></i>
+                    <span class="${obj.status==1 ?'lineThrough':'' }">${obj.name}</span>
+                    <i class="fa-solid fa-trash text-danger btn fa-2x" onclick="del(${obj.id})"></i>
+                </li>
+            `).join('')
+        }
+        
+        //insert -POST kérés:
+        function add(){
+            const myFormData=new FormData(document.querySelector('form'));
+            addTodo(urlRoot+'addTodo.php',myFormData,renderList) 
+            document.querySelector('input[name="name"]').value=""
+        }
+        
+        //törlés GET:
+        function del(id){
+            console.log(id)
+            getData(urlRoot+'delTodo.php?id='+id,renderList)
+        }
+
+        //update GET:
+        function done(id){
+            console.log(id)
+            getData(urlRoot+'doneTodo.php?id='+id,renderList)
+            
+        }
+     </script>
+    
+    
+</body>
+</html>
