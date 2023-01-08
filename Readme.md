@@ -5,4 +5,4 @@
 - server side : PHP
 - database: MySQL
 - deploying on : 000webhost
-- [Todo](https://hangmanreact.vercel.app/)
+- [Todo](https://hangmanphp.000webhostapp.com/)
